@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from typing import TextIO, List, Union
+from typing import TextIO, List, Union, Iterable
 
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest
@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
 
-def exec_commands(query: str, file: TextIO) -> Union[List[str], BadRequest]:
+def exec_commands(query: str, file: TextIO) -> Iterable[str]:
     cmds = list( map( lambda v: v.strip(), query.split('|')) )
     res = list( map( lambda v: v.strip(), file) )
     print(res)
@@ -42,13 +42,13 @@ def exec_commands(query: str, file: TextIO) -> Union[List[str], BadRequest]:
 
 
         else:
-            return BadRequest(description=f"Command {'|'.join(words)} not found")
+            raise BadRequest(description=f"Command {'|'.join(words)} not found")
 
     return res
 
 
 @app.post("/perform_query")
-def perform_query() -> List[str]:
+def perform_query() -> str:
     # нужно взять код из предыдущего ДЗ
     # добавить команду regex
     # добавить типизацию в проект, чтобы проходила утилиту mypy app.py
