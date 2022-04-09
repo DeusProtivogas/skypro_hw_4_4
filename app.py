@@ -15,7 +15,6 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 def exec_commands(query: str, file: TextIO) -> Iterable[str]:
     cmds = list( map( lambda v: v.strip(), query.split('|')) )
     res = list( map( lambda v: v.strip(), file) )
-    print(res)
 
     for cmnd in cmds:
         words = cmnd.split(':')
